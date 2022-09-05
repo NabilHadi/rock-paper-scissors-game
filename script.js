@@ -62,3 +62,12 @@ function playRound(playerChoice, computerChoice) {
     );
   }
 }
+
+function game() {
+  for (let i = 0; i < 5; i++) {
+    let playerChoice = prompt("Enter your choice: rock | paper | scissors");
+    console.log(playRound(playerChoice, getComputerChoice()));
+  }
+}
+
+game();
