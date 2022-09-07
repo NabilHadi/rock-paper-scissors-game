@@ -10,11 +10,11 @@ function playRound(playerChoice, computerChoice) {
 
   if (playerChoice === "rock") {
     if (computerChoice === "rock") {
-      return "It's a draw!";
+      return "draw";
     } else if (computerChoice === "paper") {
-      return "You lose! Paper beats Rock";
+      return "lose";
     } else if (computerChoice === "scissors") {
-      return "You win! Rock beats Scissors";
+      return "win";
     } else {
       return (
         "Error computerChoice: " +
@@ -25,11 +25,11 @@ function playRound(playerChoice, computerChoice) {
     }
   } else if (playerChoice === "paper") {
     if (computerChoice === "rock") {
-      return "You win! Paper beats Rock";
+      return "win";
     } else if (computerChoice === "paper") {
-      return "It's a draw!";
+      return "draw";
     } else if (computerChoice === "scissors") {
-      return "You lose! Scissors beats Paper";
+      return "lose";
     } else {
       return (
         "Error computerChoice: " +
@@ -40,11 +40,11 @@ function playRound(playerChoice, computerChoice) {
     }
   } else if (playerChoice === "scissors") {
     if (computerChoice === "rock") {
-      return "You lose! Rock beats Scissors";
+      return "lose";
     } else if (computerChoice === "paper") {
-      return "You win! Scissors beats Paper";
+      return "win";
     } else if (computerChoice === "scissors") {
-      return "It's a draw!";
+      return "draw";
     } else {
       return (
         "Error computerChoice: " +
@@ -63,11 +63,55 @@ function playRound(playerChoice, computerChoice) {
   }
 }
 
-function game() {
-  for (let i = 0; i < 5; i++) {
-    let playerChoice = prompt("Enter your choice: rock | paper | scissors");
-    console.log(playRound(playerChoice, getComputerChoice()));
+const resultDiv = document.querySelector("#result");
+const rockButton = document.querySelector("#rock-button");
+const paperButton = document.querySelector("#paper-button");
+const scissorsButton = document.querySelector("#scissors-button");
+const playerScoreDiv = document.querySelector("#player-score");
+const computerScoreDiv = document.querySelector("#computer-score");
+
+let playerScore = 0;
+let computerScore = 0;
+
+function onButtonClick(e) {
+  const playerSelection = e.target.getAttribute("data-selection");
+  if (!playerSelection) return;
+  const computerSelection = getComputerChoice();
+
+  const result = playRound(playerSelection, computerSelection);
+  let msg = "";
+
+  if (result === "draw") {
+    msg = "It's a draw!";
+  } else if (result === "win") {
+    msg = `You win! ${playerSelection} beats ${computerSelection}`;
+    playerScore++;
+  } else if (result === "lose") {
+    msg = `You lose! ${computerSelection} beats ${playerSelection}`;
+    computerScore++;
+  } else {
+    msg = "Error";
+  }
+
+  playerScoreDiv.textContent = playerScore;
+  computerScoreDiv.textContent = computerScore;
+  if (playerScore >= 5) {
+    resultDiv.textContent = "Congrats! You won the game!";
+    removeButtonListeners();
+  } else if (computerScore >= 5) {
+    resultDiv.textContent = "Oops! You lost the game! better luck next time";
+    removeButtonListeners();
+  } else {
+    resultDiv.textContent = msg;
   }
 }
 
-game();
+function removeButtonListeners() {
+  rockButton.removeEventListener("click", onButtonClick);
+  paperButton.removeEventListener("click", onButtonClick);
+  scissorsButton.removeEventListener("click", onButtonClick);
+}
+
+rockButton.addEventListener("click", onButtonClick);
+paperButton.addEventListener("click", onButtonClick);
+scissorsButton.addEventListener("click", onButtonClick);
