@@ -1,0 +1,35 @@
+body {
+  text-align: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:active {
+  cursor: default;
+}
+
+#displayDiv {
+  min-height: 100px;
+  border: 3px dotted black;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#resetButton {
+  display: block;
+  margin: 5px auto;
+  padding: 4px 16px;
+  background-color: brown;
+  color: aliceblue;
+  border: navajowhite 2px solid;
+}
+
+#resetButton:hover {
+  color: red;
+}

@@ -40,34 +40,81 @@ function playRound(computerSelection, playerSelection) {
   }
 }
 
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = prompt(
-      "Enter your selection: rock | paper | scissors"
-    );
-    const computerSelection = getComputerChoice();
-    let result = playRound(computerSelection, playerSelection);
-    if (result.toLowerCase().indexOf("win") !== -1) {
-      playerScore++;
-    } else if (result.toLowerCase().indexOf("lose") !== -1) {
-      computerScore++;
-    }
-    console.log(
-      result,
-      `| You: ${playerSelection}, Computer: ${computerSelection}`
-    );
-    console.log(`Your score: ${playerScore}, Computer score: ${computerScore}`);
+const containerDiv = document.querySelector(".container");
+
+const displayDiv = document.createElement("div");
+const scoreDiv = document.createElement("div");
+const resultDiv = document.createElement("div");
+
+const rockButton = document.createElement("button");
+const paperButton = document.createElement("button");
+const scissorsButton = document.createElement("button");
+const resetButton = document.createElement("button");
+
+let playerScore = 0;
+let computerScore = 0;
+
+displayDiv.setAttribute("id", "displayDiv");
+scoreDiv.setAttribute("id", "scoreDiv");
+resultDiv.setAttribute("id", "resultDiv");
+
+rockButton.setAttribute("id", "rockButton");
+paperButton.setAttribute("id", "paperButton");
+scissorsButton.setAttribute("id", "scissorsButton");
+resetButton.setAttribute("id", "resetButton");
+
+rockButton.setAttribute("data-selection", "rock");
+paperButton.setAttribute("data-selection", "paper");
+scissorsButton.setAttribute("data-selection", "scissors");
+
+rockButton.textContent = "Rock";
+paperButton.textContent = "Paper";
+scissorsButton.textContent = "Scissors";
+resetButton.textContent = "Reset";
+
+rockButton.addEventListener("click", selectionButtonClickHandler);
+paperButton.addEventListener("click", selectionButtonClickHandler);
+scissorsButton.addEventListener("click", selectionButtonClickHandler);
+resetButton.addEventListener("click", resetButtonClickHandler);
+
+containerDiv.appendChild(displayDiv);
+containerDiv.appendChild(rockButton);
+containerDiv.appendChild(paperButton);
+containerDiv.appendChild(scissorsButton);
+containerDiv.appendChild(resetButton);
+
+displayDiv.appendChild(resultDiv);
+displayDiv.appendChild(scoreDiv);
+
+function selectionButtonClickHandler(ev) {
+  const selection = ev.target.getAttribute("data-selection");
+  if (!selection) return;
+
+  const result = playRound(getComputerChoice(), selection);
+  resultDiv.textContent = result;
+  if (result.toLowerCase().indexOf("win") !== -1) {
+    playerScore++;
+  } else if (result.toLowerCase().indexOf("lose") !== -1) {
+    computerScore++;
   }
 
-  if (playerScore > computerScore) {
-    console.log("%cYou Won!", "font-size: 30px; color: green");
-  } else if (computerScore > playerScore) {
-    console.log("%cComputer Won!", "font-size: 30px; color: red");
-  } else {
-    console.log("%cIt is a Draw!", "font-size: 30px; color: yellow");
+  scoreDiv.textContent = `Your score: ${playerScore}, Computer score: ${computerScore}`;
+
+  if (playerScore >= 5 || computerScore >= 5) {
+    rockButton.disabled = true;
+    paperButton.disabled = true;
+    scissorsButton.disabled = true;
   }
 }
 
-game();
+function resetButtonClickHandler(ev) {
+  playerScore = 0;
+  computerScore = 0;
+
+  rockButton.disabled = false;
+  paperButton.disabled = false;
+  scissorsButton.disabled = false;
+
+  resultDiv.textContent = "";
+  scoreDiv.textContent = "";
+}
