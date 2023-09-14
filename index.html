@@ -9,7 +9,15 @@
 
 <body>
   <h1>Rock Paper Scissors</h1>
-  <button onclick="javascript:game()">Play</button>
+  <div>
+    Your score <span id="player-score">0</span> | Computer score <span id="computer-score">0</span>
+  </div>
+  <br>
+  <button id="rock-btn" data-key="rock">Rock</button>
+  <button id="paper-btn" data-key="paper">Paper</button>
+  <button id="scissors-btn" data-key="scissors">Scissors</button>
+  <br>
+  <div id="result"></div>
   <script src="./script.js"></script>
 </body>
 

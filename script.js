@@ -1,6 +1,6 @@
 const rpsChoices = ["rock", "paper", "scissors"];
 let computerScore = 0;
-let PlayerScore = 0;
+let playerScore = 0;
 
 function isValidRpsChoice(str) {
   return rpsChoices.some((s) => s === str);
@@ -30,7 +30,7 @@ function playRound(playerSelection, computerSelection) {
       computerScore++;
       return "You lose! Paper beats Rock";
     } else {
-      PlayerScore++;
+      playerScore++;
       return "You win! Rock beats Scissors";
     }
   } else if (playerS === "paper") {
@@ -40,7 +40,7 @@ function playRound(playerSelection, computerSelection) {
       computerScore++;
       return "You lose! Scissors beats Paper";
     } else {
-      PlayerScore++;
+      playerScore++;
       return "You win! Paper beats Rock";
     }
   } else {
@@ -50,33 +50,37 @@ function playRound(playerSelection, computerSelection) {
       computerScore++;
       return "You lose! Rock beats Scissors";
     } else {
-      PlayerScore++;
+      playerScore++;
       return "You win! Scissors beats Scissors";
     }
   }
 }
 
-function game() {
-  console.log("Game Started!");
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt(
-      "Enter a valid game choice (rock, paper, scissors)"
-    );
-    let computerSelection = getComputerChoice();
+const resultDiv = document.querySelector("#result");
+const playerScoreSpan = document.querySelector("#player-score");
+const computerScoreSpan = document.querySelector("#computer-score");
 
-    console.log(playRound(playerSelection, computerSelection));
+function handleBtnClick(e) {
+  const selection = e.target.dataset.key;
+  if (!selection) return;
+
+  resultDiv.textContent = playRound(selection, getComputerChoice());
+  playerScoreSpan.textContent = playerScore;
+  computerScoreSpan.textContent = computerScore;
+
+  if (playerScore === 5 || computerScore === 5) {
+    resultDiv.textContent = `${
+      playerScore > computerScore ? "You" : "Computer"
+    } won!!`;
+    playerScore = 0;
+    computerScore = 0;
   }
-
-  console.log("Game over!");
-  if (PlayerScore === computerScore) {
-    console.log("It is a draw");
-  } else if (PlayerScore > computerScore) {
-    console.log("You won the game!! :)");
-  } else {
-    console.log("You lost the game! :(");
-  }
-
-  console.log(
-    `Your score is ${PlayerScore} and computer's score is ${computerScore}`
-  );
 }
+
+const rockBtn = document.querySelector("#rock-btn");
+const paperBtn = document.querySelector("#paper-btn");
+const scissorsBtn = document.querySelector("#scissors-btn");
+
+rockBtn.addEventListener("click", handleBtnClick);
+paperBtn.addEventListener("click", handleBtnClick);
+scissorsBtn.addEventListener("click", handleBtnClick);
